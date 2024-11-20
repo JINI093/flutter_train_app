@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart';
+import 'HomePage.dart';
 
 void main() {
-  runApp(const TrainApp());
+  runApp(const MyApp());
 }
 
-class TrainApp extends StatelessWidget {
-  const TrainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '기차 예매',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
+        useMaterial3: true,
       ),
       home: const HomePage(),
     );

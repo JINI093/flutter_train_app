@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Seat_Page.dart';
-import 'Station_List_Page.dart';
+import 'SeatPage.dart';
+import 'StationListPage.dart';
 
 class HomePage extends StatefulWidget {
   // 홈페이지의 상태를 관리하는 StatefulWidget 생성
@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
                 height: 200,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -53,18 +53,32 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       // 출발역 선택 버튼 - 누르면 역 목록 페이지로 이동
-                      TextButton(
-                        onPressed: () {
-                          // StationListPage로 이동하여 출발역 선택
-                        },
-                        child: Text(
-                          startStation ?? '선택', // 선택된 역이 없으면 '선택' 표시
-                          style: TextStyle(
-                            fontSize: 40,
-                            color: Colors.black,
+                  TextButton(
+                    onPressed: () async {
+                      final selected = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StationListPage(
+                            isStart: true,
+                            onStationSelected: (String station) {},
+                            excludeStation: endStation, // 도착역이 선택되어 있다면 제외
                           ),
                         ),
+                      );
+                      if (selected != null) {
+                        setState(() {
+                          startStation = selected;
+                        });
+                      }
+                    },
+                    child: Text(
+                      startStation ?? '선택',
+                      style: TextStyle(
+                        fontSize: 40,
+                        color: Colors.black,
                       ),
+                    ),
+                  ),
                     ],
                   ),
                   // 구분선
@@ -88,11 +102,25 @@ class _HomePageState extends State<HomePage> {
                       ),
                       // 도착역 선택 버튼 - 누르면 역 목록 페이지로 이동
                       TextButton(
-                        onPressed: () {
-                          // StationListPage로 이동하여 도착역 선택
+                        onPressed: () async {
+                          final selected = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StationListPage(
+                                isStart: false,
+                                onStationSelected: (String station) {},
+                                excludeStation: startStation, // 출발역이 선택되어 있다면 제외
+                              ),
+                            ),
+                          );
+                          if (selected != null) {
+                            setState(() {
+                              endStation = selected;
+                            });
+                          }
                         },
                         child: Text(
-                          endStation ?? '선택', // 선택된 역이 없으면 '선택' 표시
+                          endStation ?? '선택',
                           style: TextStyle(
                             fontSize: 40,
                             color: Colors.black,
@@ -112,13 +140,20 @@ class _HomePageState extends State<HomePage> {
                 onPressed: startStation != null && endStation != null
                     ? () {
                         // SeatPage로 이동
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SeatPage(),
+                          ),
+                        );
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.purple,
+                  disabledBackgroundColor: Colors.purple.withOpacity(0.5), // 비활성화 상태에서도 보라색 유지
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20), // 모서리 둥글기 20
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
                 child: Text(
