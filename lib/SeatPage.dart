@@ -314,7 +314,7 @@ class _SeatPageState extends State<SeatPage> {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 child: const Text(
-                  '예매하기',
+                  '예매 하기',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
